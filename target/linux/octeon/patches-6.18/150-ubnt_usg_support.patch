@@ -36,7 +36,7 @@
  		if (ipd_port >= 0 && ipd_port <= 2)
  			return 7 - ipd_port;
  		else
-@@ -337,6 +338,7 @@ enum cvmx_helper_board_usb_clock_types _
+@@ -335,6 +336,7 @@ enum cvmx_helper_board_usb_clock_types _
  	case CVMX_BOARD_TYPE_LANAI2_G:
  	case CVMX_BOARD_TYPE_NIC10E_66:
  	case CVMX_BOARD_TYPE_UBNT_E100:
