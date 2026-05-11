@@ -1,0 +1,187 @@
+// SPDX-License-Identifier: GPL-2.0-only
+/*
+ * Device tree source for Ubiquiti EdgeRouter PoE
+ */
+
+#include "cn5020_ubnt_e100.dtsi"
+#include <dt-bindings/gpio/gpio.h>
+
+/ {
+	/* E101 */
+	compatible = "ubnt,erpoe-5", "ubnt,e100", "cavium,cn5020";
+	model = "Ubiquiti EdgeRouter PoE (ERPoe-5)";
+
+	gpios: gpio-export {
+		compatible = "gpio-export";
+
+		eth0-poe-24v {
+			gpio-export,name = "eth0:poe:24v";
+			gpio-export,output = <0>;
+			gpios = <&gpio 0x2 GPIO_ACTIVE_HIGH>;
+		};
+
+		eth0-poe-48v {
+			gpio-export,name = "eth0:poe:48v";
+			gpio-export,output = <0>;
+			gpios = <&gpio 0x3 GPIO_ACTIVE_HIGH>;
+		};
+
+		eth1-poe-24v {
+			gpio-export,name = "eth1:poe:24v";
+			gpio-export,output = <0>;
+			gpios = <&gpio 0x4 GPIO_ACTIVE_HIGH>;
+		};
+
+		eth1-poe-48v {
+			gpio-export,name = "eth1:poe:48v";
+			gpio-export,output = <0>;
+			gpios = <&gpio 0x5 GPIO_ACTIVE_HIGH>;
+		};
+
+		eth2-poe-24v {
+			gpio-export,name = "eth2:poe:24v";
+			gpio-export,output = <0>;
+			gpios = <&gpio 0xd GPIO_ACTIVE_HIGH>;
+		};
+
+		eth2-poe-48v {
+			gpio-export,name = "eth2:poe:48v";
+			gpio-export,output = <0>;
+			gpios = <&gpio 0xe GPIO_ACTIVE_HIGH>;
+		};
+
+		eth3-poe-24v {
+			gpio-export,name = "eth3:poe:24v";
+			gpio-export,output = <0>;
+			gpios = <&gpio 0xf GPIO_ACTIVE_HIGH>;
+		};
+
+		eth3-poe-48v {
+			gpio-export,name = "eth3:poe:48v";
+			gpio-export,output = <0>;
+			gpios = <&gpio 0x10 GPIO_ACTIVE_HIGH>;
+		};
+
+		eth4-poe-24v {
+			gpio-export,name = "eth4:poe:24v";
+			gpio-export,output = <0>;
+			gpios = <&gpio 0x11 GPIO_ACTIVE_HIGH>;
+		};
+
+		eth4-poe-48v {
+			gpio-export,name = "eth4:poe:48v";
+			gpio-export,output = <0>;
+			gpios = <&gpio 0x12 GPIO_ACTIVE_HIGH>;
+		};
+	};
+};
+
+&flash0 {
+	compatible = "Macronix,mx29lv640e", "cfi-flash";
+	reg = <0 0 0x800000>;
+
+	partitions {
+		partition@100000 {
+			/* 64k EEPROM */
+			reg = <0x100000 0x10000>;
+		};
+
+		partition@7fc000 {
+			reg = <0x7fc000 0x2000>;
+			label = "u-boot_gd";
+			read-only;
+		};
+
+		partition@7fe000 {
+			reg = <0x7fe000 0x2000>;
+			compatible = "u-boot,env";
+			label = "u-boot_env";
+		};
+	};
+};
+
+&smi0 {
+	phy2: ethernet-phy@0 {
+		reg = <0>;
+	};
+
+	phy3: ethernet-phy@1 {
+		reg = <1>;
+	};
+
+	phy4: ethernet-phy@2 {
+		reg = <2>;
+	};
+
+	ethernet-switch@10 {
+		reg = <0x10>;
+		compatible = "qca,qca8327";
+
+		ports {
+			#address-cells = <1>;
+			#size-cells = <0>;
+
+			sw0phy: port@0 {
+				reg = <0>;
+				ethernet = <&switch0>;
+
+				phy-mode = "rgmii-rxid";
+				rx-internal-delay-ps = <1000>;
+
+				fixed-link {
+					speed = <1000>;
+					full-duplex;
+				};
+			};
+
+			eth2: port@1 {
+				reg = <1>;
+
+				phy-handle = <&phy2>;
+
+				label = "eth2";
+				nvmem-cells = <&macaddr_eeprom_0 2>;
+				nvmem-cell-names = "mac-address";
+			};
+
+			eth3: port@2 {
+				reg = <2>;
+
+				phy-handle = <&phy3>;
+
+				label = "eth3";
+				nvmem-cells = <&macaddr_eeprom_0 3>;
+				nvmem-cell-names = "mac-address";
+			};
+
+			eth4: port@3 {
+				reg = <3>;
+
+				phy-handle = <&phy4>;
+
+				label = "eth4";
+				nvmem-cells = <&macaddr_eeprom_0 4>;
+				nvmem-cell-names = "mac-address";
+			};
+		};
+	};
+};
+
+&pip {
+	interface@0 {
+		switch0: ethernet@2 {
+			reg = <0x2>;
+
+			phy-handle = <&sw0phy>;
+			rx-delay = <0>;
+			tx-delay = <0x10>;
+
+			label = "switch0";
+
+			fixed-link {
+				speed = <1000>;
+				full-duplex;
+			};
+		};
+	};
+};

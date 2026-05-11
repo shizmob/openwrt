@@ -85,6 +85,17 @@ define Device/ubnt_e100
   CMDLINE := root=/dev/sda2 rootfstype=squashfs,ext4 rootwait mtdparts=dummy:-
 endef
 
+# E101
+define Device/ubnt_edgerouter-poe
+  $(Device/ubnt_e100)
+  DEVICE_MODEL := EdgeRouter PoE
+  DEVICE_DTS := cn5020_ubnt_edgerouter-poe
+  DEVICE_PACKAGES += kmod-dsa-qca8k -swconfig
+  BOARD_NAME := ubnt,erpoe-5
+  SUPPORTED_DEVICES += ubnt,erpoe-5
+endef
+TARGET_DEVICES += ubnt_edgerouter-poe
+
 # E102
 define Device/ubnt_edgerouter-lite
   $(Device/ubnt_e100)

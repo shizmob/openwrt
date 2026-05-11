@@ -26,6 +26,7 @@ octeon_move_config() {
 
 	case "$(board_name)" in
 		ubnt,erlite-3|\
+		ubnt,erpoe-5|\
 		ubnt,usg)
 			move_config "/dev/sda1" "vfat"
 			;;

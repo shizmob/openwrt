@@ -48,6 +48,7 @@ platform_copy_config_helper() {
 platform_copy_config() {
 	case "$(board_name)" in
 	ubnt,erlite-3|\
+	ubnt,erpoe-5|\
 	ubnt,usg)
 		platform_copy_config_helper /dev/sda1 vfat
 		;;
@@ -133,6 +134,7 @@ platform_do_upgrade() {
 		kernel=/dev/mmcblk0p1
 		;;
 	ubnt,erlite-3|\
+	ubnt,erpoe-5|\
 	ubnt,usg)
 		kernel=/dev/sda1
 		;;
@@ -165,6 +167,7 @@ platform_check_image() {
 	ubnt,edgerouter-4 | \
 	ubnt,edgerouter-6p | \
 	ubnt,erlite-3 | \
+	ubnt,erpoe-5 | \
 	ubnt,usg | \
 	cisco,vedge1000)
 		local kernel_length=$(tar xf $tar_file $board_dir/kernel -O | wc -c 2> /dev/null)

@@ -1,0 +1,24 @@
+#
+# Copyright (C) 2026 OpenWrt.org
+#
+
+. /lib/functions/uci-defaults.sh
+
+board_config_update
+
+case "$(board_name)" in
+ubnt,erpoe-5)
+	ucidef_add_gpio_switch "eth0_poe_24v" "eth0 PoE (24V)" "eth0:poe:24v"
+	ucidef_add_gpio_switch "eth0_poe_48v" "eth0 PoE (48V)" "eth0:poe:48v"
+	ucidef_add_gpio_switch "eth1_poe_24v" "eth1 PoE (24V)" "eth1:poe:24v"
+	ucidef_add_gpio_switch "eth1_poe_48v" "eth1 PoE (48V)" "eth1:poe:48v"
+	ucidef_add_gpio_switch "eth2_poe_24v" "eth2 PoE (24V)" "eth2:poe:24v"
+	ucidef_add_gpio_switch "eth2_poe_48v" "eth2 PoE (48V)" "eth2:poe:48v"
+	ucidef_add_gpio_switch "eth3_poe_24v" "eth3 PoE (24V)" "eth3:poe:24v"
+	ucidef_add_gpio_switch "eth3_poe_48v" "eth3 PoE (48V)" "eth3:poe:48v"
+	ucidef_add_gpio_switch "eth4_poe_24v" "eth4 PoE (24V)" "eth4:poe:24v"
+	ucidef_add_gpio_switch "eth4_poe_48v" "eth4 PoE (48V)" "eth4:poe:48v"
+	;;
+esac
+
+board_config_flush
