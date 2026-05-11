@@ -50,6 +50,19 @@ define Device/ubnt_e200
   # Disable PCIe on ER as it doesn't have PCIe peripherals and some devices lock up on initialization
   CMDLINE := root=/dev/mmcblk0p2 rootfstype=squashfs,ext4 rootwait pcie_octeon.pcie_disable=1
 endef
+E200_SFP_PACKAGES := kmod-sfp kmod-i2c-mux-gpio
+
+# E200
+define Device/ubnt_edgerouter-pro
+  $(Device/ubnt_e200)
+  DEVICE_MODEL := EdgeRouter PRO
+  DEVICE_DTS := cn6120_ubnt_edgerouter-pro
+  DEVICE_PACKAGES += $(E200_SFP_PACKAGES)
+  KERNEL_DEPENDS += $(DTS_DIR)/cn6120_ubnt_e20x.dtsi
+  BOARD_NAME := ubnt,erpro-8
+  SUPPORTED_DEVICES += ubnt,erpro-8
+endef
+TARGET_DEVICES += ubnt_edgerouter-pro
 
 # E201
 define Device/ubnt_edgerouter
